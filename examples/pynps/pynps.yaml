@@ -1,0 +1,25 @@
+# ---------------------------------------------------------------------------------
+# 
+# PYNPS SETTINGS 
+#
+# ---------------------------------------------------------------------------------
+
+ALLOWED_COUNTRIES: 
+    - ARG 
+    - URY
+    - BOL
+    - COL
+    - MEX
+    - PRY
+    - PER
+    - VEN
+    - CHL
+ALLOWED_TX_SOURCES:
+    - WEB
+    - IVR
+    - CALLCENTRE 
+    - TELORDER 
+    - MAILORDER
+    - MTORDER 
+    - CARDPRESENT
+    - PSPBACKOFFICE
