@@ -244,14 +244,14 @@ class Alfa(Text):
     'a' a la 'z'.
     """
 
-    set_ = string.ascii_letters + chr(32)
+    set_ = '^[a-Z]+$'
     exc_ = 'Only values with ASCII letters accepted'
 
     def __set__(self, name, value):
         value = unicode(value)
-        if not all(c in self.set_ for c in value):
+        expr = re.compile(set_)
+        if not expr.match(value):
             raise ValueError(self.exc_)
-        super(Alfa, self).__set__(name, value)
 
 
 class Alfanumeric(Alfa):
