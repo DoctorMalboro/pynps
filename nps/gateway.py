@@ -48,7 +48,7 @@ class NPSGateway(object):
         ws_factory = client.factory.create(factory)
         ws_method = getattr(client.service, method)
 
-        for key, value in request.items.iteritems():
+        for key, value in request.items.items():
             if not value:
                 continue
             ws_factory[key] = value
