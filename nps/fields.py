@@ -246,7 +246,7 @@ class Alfa(Text):
     exc_ = 'Only values with ASCII letters accepted'
 
     def __set__(self, name, value):
-        expr = re.compile(set_)
+        expr = re.compile(self.set_)
         if not bool(expr.match(value)):
             raise ValueError(self.exc_)
 
