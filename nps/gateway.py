@@ -28,7 +28,7 @@ class NPSGateway(object):
         hash_values.append(transaction.secret)
         input_ = ''.join([v for v in hash_values if v])
         m = hashlib.md5()
-        m.update(input_)
+        m.update(input_.encode('utf-8'))
 
         return m.hexdigest()
 
