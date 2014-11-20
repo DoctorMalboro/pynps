@@ -219,7 +219,7 @@ class Numeric(Text):
     """
 
     def __set__(self, name, value):
-        value = unicode(value)
+        value = value.encode('utf-8')
         if not value.isdigit():
             msg = 'Argument must be numbers but passed as strings, like "132"'
             raise ValueError(msg)
@@ -231,7 +231,7 @@ class Amount(Text):
     moneda. En Argentina, esto son centavos. Ej: $150.32 son 15032 ctvs."""
 
     def __set__(self, name, value):
-        value = unicode(value)
+        value = value.encode('utf-8')
         value = value.replace(',', '').replace('.', '')
         if not value.isdigit():
             msg = 'Argument must be numbers but passed as strings, like "132"'
@@ -248,7 +248,7 @@ class Alfa(Text):
     exc_ = 'Only values with ASCII letters accepted'
 
     def __set__(self, name, value):
-        value = str(value, 'utf-8')
+        value = value.encode('utf-8')
         expr = re.compile(set_)
         if not expr.match(value):
             raise ValueError(self.exc_)
