@@ -249,6 +249,7 @@ class Alfa(Text):
         expr = re.compile(self.set_)
         if not bool(expr.match(value)):
             raise ValueError(self.exc_)
+        super(Alfa, self).__set__(name, value)
 
 class Alfanumeric(Alfa):
     """ Alfa + Numeric. Cualquier caracter que sea un número del 0 al 9, una
