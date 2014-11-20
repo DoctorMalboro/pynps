@@ -244,22 +244,21 @@ class Alfa(Text):
     'a' a la 'z'.
     """
 
-    set_ = '^[a-Z]+$'
+    set_ = '^[a-zA-Z]+$'
     exc_ = 'Only values with ASCII letters accepted'
 
     def __set__(self, name, value):
-        value = unicode(value)
+        value = str(value, 'utf-8')
         expr = re.compile(set_)
         if not expr.match(value):
             raise ValueError(self.exc_)
-
 
 class Alfanumeric(Alfa):
     """ Alfa + Numeric. Cualquier caracter que sea un número del 0 al 9, una
     letra de la 'a' a la 'z' o de la 'A' a la 'Z'.
     """
 
-    set_ = string.digits + string.ascii_letters + chr(32)
+    set_ = '^[a-zA-Z0-9]+$'
     exc_ = 'Only Alfa and Numeric chars are allowed'
 
 
@@ -267,18 +266,21 @@ class Order(Alfa):
     """ Alfanumeric + '_' + '-' + '.'
     """
 
-    set_ = string.digits + string.ascii_letters + '_' + '-' + '.'
-    exc_ = 'Only Alfa, Numeric, "_", "-" and "." chars are alowwed'
+    set_ = '^[a-zA-Z0-9 \_\-\.]+$'
+    exc_ = 'Only Alfa, Numeric, "_", "-" and "." chars are allowed'
 
 
 class MerchantId(Alfa):
     """ Alfanumeric + '_'
     """
 
-    set_ = string.digits + string.ascii_letters + '_'
-    exc_ = 'Only Alfa, Numeric, and "_" chars are alowwed'
+    set_ = '^[a-zA-Z0-9 \_]+$'
+    exc_ = 'Only Alfa, Numeric, and "_" chars are allowed'
 
 
 class Country(Text):
     """ Paises según ISO 3166_1.
     """
+
+    set_ = '^[A-Z]{3}$'
+    exc_ = 'Only country codes according to the ISO 3166-1 are allowed'
