@@ -15,15 +15,9 @@ VALIDATE_EMAIL = re.compile(  # thanks django
     r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-\011\013\014\016-\177])*"'
     r')@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?$', re.IGNORECASE)
 
+VALIDATE_URL = re.compile(r"""\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""", re.IGNORECASE)
 
-VALIDATE_URL = re.compile(
-    r'^(?:http|ftp)s?://' # http:// or https://
-    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
-    r'localhost|' #localhost... and domain ^ ...
-    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
-    r'(?::\d+)?' # optional port
-    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-
+VALIDATE_VERSION = re.compile(r'[0-9]\.[0-9]')
 
 class Text(object):
     """ Tipo de datos base para los fields de tipo Text
@@ -112,8 +106,25 @@ class Email(object):
 
     def __set__(self, name, value):
         if self.validate:
-            if not VALIDATE_EMAIL.match(value):
+            if not bool(VALIDATE_EMAIL.match(value)):
                 raise ValueError()
+        self._value = value
+
+
+class Version(object):
+
+    _value = None
+
+    def __init__(self, validate=False):
+        self.validate = validate
+
+    def __get__(self, instance, owner):
+        return self._value
+
+    def __set__(self, name, value):
+        if self.validate and value is not None:
+            if not bool(VALIDATE_VERSION.match(str(value))):
+                raise ValueError('Invalid version')
         self._value = value
 
 
@@ -130,7 +141,7 @@ class Url(object):
 
     def __set__(self, name, value):
         if self.validate and value is not None:
-            if not VALIDATE_URL.match(value):
+            if not bool(VALIDATE_URL.match(value)):
                 raise ValueError('Invalid URL Format')
         if len(value) > self.max_length:
             msg = 'Url cant be longer than %s chars' % self.max_length
