@@ -40,7 +40,7 @@ class PayOnlineTransactionThreeStepsRequest(BaseRequestResponse):
     psp_MerchantId = fields.MerchantId(max_length=14)
     psp_PurchaseDescription = fields.Alfa(max_length=15)
     psp_FrmLanguage = fields.Order(min_length=2, max_length=5)
-    psp_Version = fields.Order(max_length=12, default='2.2')
+    psp_Version = fields.Version()
 
     psp_Country = fields.Country(length=3,
         in_=settings.ALLOWED_COUNTRIES, default='ARG')
@@ -149,5 +149,5 @@ class SimpleQueryTx(object):
         self.secret = secret
         self.request = SimpleQueryTxRquest()
         self.request.psp_MerchantId = merchant_id
-        self.request.psp_QueryCriteriaId = int(psp_MerchTxRef)
+        self.request.psp_QueryCriteriaId = psp_MerchTxRef
         self.response = SimpleQueryTxResponse()
