@@ -54,6 +54,9 @@ class NPSGateway(object):
             ws_factory[key] = value
 
         response = ws_method(ws_factory)  # call the webservice
+        if hasattr(response, 'psp_Transaction'):
+            transaction.response.user_data = getattr(response,
+                                                'psp_Transaction')
         for kw in transaction.response.items.keys():
             if response.__contains__(kw):
                 value = getattr(response, kw)
